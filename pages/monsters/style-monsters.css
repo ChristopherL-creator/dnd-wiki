@@ -138,14 +138,13 @@ body {
     border-radius: 4px;
 }
 
-.sidepanel {  
-    height: 45px;
+.sidepanel { 
     /* Specify a height */
     width: 0;
     /* 0 width - change this with JavaScript */
     position: fixed;
     /* Stay in place */
-    z-index: -1;
+    z-index: 1;
     /* Stay on top */
     bottom: 23px;
     right: 25px;
@@ -218,10 +217,9 @@ input[type=search] {
     width: 100%;
 }
 
-.autocomplete-items { 
-    z-index: -1;
-    max-height: 150px;
+.autocomplete-items {
     overflow-y: scroll;
+    max-height: 200px;
     height: fit-content;
     width: 60%;
     position: fixed;
@@ -257,7 +255,6 @@ input[type=search] {
 
 /* bottone sopra riultato autocomplete, porta a link corripondente a mostro */
 .go-to-autocompleted-page-button{ 
-    z-index: -1;
     position: absolute;
     top: 0px;
     right: 0px;
