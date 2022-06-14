@@ -273,7 +273,6 @@ input[type=search] {
 
 .monster-card-stats th {
     border-left: 1px solid rgb(255, 255, 255); 
-    padding: 0px 3px;
 }
 
 .monster-card-stats td {
