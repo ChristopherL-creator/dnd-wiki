@@ -25,7 +25,9 @@ html, body {
     border-top: 1px solid #DDD;
 }
 
-
+.carousel-controller-style{ 
+    top: 85px;
+}
 
 .accordion-button:not(.collapsed) {
     color: #bc0f0f;
@@ -69,7 +71,7 @@ html, body {
 .creature-title{
     font-size: xx-large;
     text-align: center;
-}
+} 
 
 .breadcrumb-button {
     background-color: transparent;
