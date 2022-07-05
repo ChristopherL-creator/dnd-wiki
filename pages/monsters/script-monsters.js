@@ -9,6 +9,8 @@ function goHome() {
   window.location.href = '../../index.html';
 }
 
+
+
 let monstersData = []; // creo array vuoto, che riempirò con risultato fetch, ossia dati per ciascun mostro 
 
 let isSearchButtonOpened = false;
@@ -21,11 +23,11 @@ function initMonsters() {
             for (const monster of result.results) {
               monstersArrayNamesNoIndex.push(monster.name); 
               monstersArrayNames.push(monster.index);
-
             }
             return displayMonsters(result.results); // prendo array di mostri
         });
 } 
+
 
 function displayMonsters(monsters) {
     const monstersContainer = document.getElementById("monsters-container");
@@ -34,14 +36,16 @@ function displayMonsters(monsters) {
         const monster = monsters[i]
         const flipCardDiv = document.createElement("div"); // Creo il div che conterrà il singolo mostro
         flipCardDiv.className = "flip-card";
-        flipCardDiv.innerHTML = createMonsterTemplate(monster,i)        
+        const result = createMonsterTemplate(monster,i) 
+        if(result === null) continue
+        flipCardDiv.innerHTML = result
         const seeMoreButton = flipCardDiv.querySelector(".see-more");
         seeMoreButton.onclick = () => goToMonsterPage(monster.index); // Aggiungo al bottone la funzione goToMonsterPage()
         monstersContainer.appendChild(flipCardDiv); // Aggiungo il div del mostro singolo al div che contiene tutti i mostri
     }
     changeCardFontSize()
+    
 }
-
 
 /* Set the width of the sidebar to 250px (show it) */
 function openNav() {
@@ -183,9 +187,28 @@ function searchButtonClicked(){
   function closeNav() {
     document.getElementById("mySidepanel").style.width = "0";
   }
+  
+function changeCardFontSize(){
+    const styleTag = document.getElementById('my-style')
+    const styleTemplate = `
+    .flip-card { font-size: #CARD_BACK_SIZEpx }
+    .monster-card-stats{ font-size: #STATS_FONT_SIZEpx !important}
+    .back-card-monster-name { font-size: #CARD_BACK_NAME_SIZEpx }`
+    
+    const div = document.getElementById('monsters-container')
+    const cardWidth = div.querySelector('.stats-grid-div').clientWidth
+    const gridFontSize = cardWidth * 0.07
+    const cardBackFontSize = cardWidth * 0.08
+    const cardBackNameSize = cardWidth * 0.1
+    styleTag.innerHTML = styleTemplate
+        .replace('#CARD_BACK_SIZE', cardBackFontSize)
+        .replace('#STATS_FONT_SIZE', gridFontSize)
+        .replace('#CARD_BACK_NAME_SIZE', cardBackNameSize)
+}
 
 function createMonsterTemplate(monster, index) {
     const currentMonster = monstersJson[index] 
+    if(currentMonster === undefined) return null
     const monsterInfo = currentMonster.size + ' ' + currentMonster.type + ' ' + currentMonster.alignment
     const monsterCardTemplate = `
     <div class="flip-card-inner">
@@ -219,7 +242,10 @@ function createMonsterTemplate(monster, index) {
         monster.index === "wereboar-human" ||
         monster.index === "wererat-hybrid" ||
         monster.index === "weretiger-hybrid" ||
-        monster.index === "werewolf-hybrid"
+        monster.index === "werewolf-hybrid" ||
+        monster.index === "vampire-bat" ||
+        monster.index === "vampire-mist" ||
+        monster.index === "vampire-vampire" 
         ) {
             monsterUrl = "./pictures/default.jpeg";
     } else  monsterUrl = "./pictures/" + monster.index + ".png";
@@ -231,30 +257,14 @@ function createMonsterTemplate(monster, index) {
         .replace('#MONSTER_INFOS', monsterInfo)
         .replace('#STATS_GRID', fillCreatureStats(currentMonster))
         .replace('#CHALLENGE', currentMonster.challenge_rating);
+  
 }
 
-fontsize = function () {
-    var fontSize = document.getElementById('monsters-container').querySelectorAll(".stats-grid-div ").width() * 0.10; // 10% of container width
-    document.querySelectorAll(".monster-card-stats").css('font-size', fontSize);
-};
+// fontsize = function () {
+//     var fontSize = document.getElementById('monsters-container').querySelectorAll(".stats-grid-div ").width() * 0.10; // 10% of container width
+//     document.querySelectorAll(".monster-card-stats").css('font-size', fontSize);
+// };
 
-function changeCardFontSize(){
-    const styleTag = document.getElementById('my-style')
-    const styleTemplate = `
-    .flip-card { font-size: #CARD_BACK_SIZEpx }
-    .monster-card-stats{ font-size: #STATS_FONT_SIZEpx !important}
-    .back-card-monster-name { font-size: #CARD_BACK_NAME_SIZEpx }`
-    
-    const div = document.getElementById('monsters-container')
-    const cardWidth = div.querySelector('.stats-grid-div').clientWidth
-    const gridFontSize = cardWidth * 0.07
-    const cardBackFontSize = cardWidth * 0.08
-    const cardBackNameSize = cardWidth * 0.1
-    styleTag.innerHTML = styleTemplate
-        .replace('#CARD_BACK_SIZE', cardBackFontSize)
-        .replace('#STATS_FONT_SIZE', gridFontSize)
-        .replace('#CARD_BACK_NAME_SIZE', cardBackNameSize)
-}
 window.addEventListener("resize", changeCardFontSize)
 
 initMonsters();
